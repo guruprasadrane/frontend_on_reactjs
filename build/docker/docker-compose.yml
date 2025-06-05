@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Development service
+  dev:
+    build:
+      context: ../..
+      target: build
+      dockerfile: build/docker/Dockerfile
+    volumes:
+      - ../..:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    command: npm start
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
+
+  # Production service
+  prod:
+    build:
+      context: ../..
+      dockerfile: build/docker/Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production 
